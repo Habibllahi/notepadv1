@@ -4,6 +4,7 @@ package ng.com.codetrik.notepad;
  */
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.Configuration;
 
 public class ServletInitializer extends SpringBootServletInitializer {
     @Override

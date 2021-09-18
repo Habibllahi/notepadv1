@@ -22,12 +22,13 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories("ng.com.codetrik.notepad")
-@Profile("production")
-public class HibernateConfig {
+@Profile("development")
+public class HibernateConfigDev {
 
-    String jdbcUrl = System.getenv("JDBC_DATABASE_URL");
-    String userName = System.getenv("JDBC_DATABASE_USERNAME");
-    String password = System.getenv("JDBC_DATABASE_PASSWORD");
+    String jdbcUrl = "jdbc:postgresql://ec2-34-227-120-94.compute-1.amazonaws.com:5432/d3feoncbee7em4?sslmode=require&user=gknivmpxchamku&password=0f1b8874989db85d558cd4bc276453bb590cae9033db96ed44371be388996263";
+
+    String userName = "gknivmpxchamku";
+    String password = "0f1b8874989db85d558cd4bc276453bb590cae9033db96ed44371be388996263";
     @Bean
     public DataSource dataSource(){
         HikariConfig hConfig = new HikariConfig();

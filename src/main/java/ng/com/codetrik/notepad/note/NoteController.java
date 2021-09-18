@@ -45,9 +45,4 @@ public class NoteController {
         deferredResult.setResult(responseEntity.get());
         return  deferredResult;
     }
-
-    @GetMapping()
-    public String working(){
-        return "Working......";
-    }
 }
