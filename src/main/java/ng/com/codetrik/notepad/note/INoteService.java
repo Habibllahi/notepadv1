@@ -6,5 +6,5 @@ import java.util.UUID;
 
 public interface INoteService {
     Single<Note> getNoteById(UUID id);
-    Single<Note> setNoteById(Note note);
+    Single<Note> createNote(Note note);
 }

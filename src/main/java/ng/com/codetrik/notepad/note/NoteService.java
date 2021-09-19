@@ -18,7 +18,7 @@ public class NoteService implements INoteService{
     }
 
     @Override
-    public Single<Note> setNoteById(Note note) {
+    public Single<Note> createNote(Note note) {
         return Single.just(noteRepository.save(note));
     }
 }

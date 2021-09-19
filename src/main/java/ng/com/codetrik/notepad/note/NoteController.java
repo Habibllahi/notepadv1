@@ -36,7 +36,7 @@ public class NoteController {
     public DeferredResult<ResponseEntity<Note>> setNote(@RequestBody @Valid Note note, BindingResult br){
         DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
         AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
-        noteService.setNoteById(note).subscribe(
+        noteService.createNote(note).subscribe(
                 savedNote -> {
                     responseEntity.set(new ResponseEntity<>(savedNote, HttpStatus.CREATED));
                 },error->{

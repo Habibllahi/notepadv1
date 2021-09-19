@@ -26,8 +26,10 @@ public class UserService implements IUserService{
     }
 
     private User createUserProcess(User user){
-        var optionalUser = userRepository.findById(user.getId());
-        if(optionalUser.isPresent()) throw new UserAlreadyExistException("user with username " + user.getUsername() + " already exist");
+        if(user.id != null){
+            var optionalUser = userRepository.findById(user.getId());
+            if(optionalUser.isPresent()) throw new UserAlreadyExistException("user with username " + user.getUsername() + " already exist");
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setAccountNonExpired(true);
         user.setAccountNonLocked(true);
