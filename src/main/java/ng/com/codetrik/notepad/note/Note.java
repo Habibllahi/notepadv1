@@ -20,10 +20,7 @@ import java.util.UUID;
 public class Note {
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type = "org.hibernate.type.UUIDCharType")
-    private UUID id;
+    private Long id;
 
     @CreationTimestamp
     @Column(name="creation_timestamp")

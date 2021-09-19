@@ -5,9 +5,6 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.UUID;
-
 @Service
 @Data
 public class NoteService implements INoteService{
@@ -15,7 +12,7 @@ public class NoteService implements INoteService{
     INoteRepository noteRepository;
 
     @Override
-    public Single<Note> getNoteById(UUID id) {
+    public Single<Note> getNoteById(Long id) {
         return Single.just(noteRepository.findById(id).get());
     }
 

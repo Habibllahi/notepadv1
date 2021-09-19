@@ -19,7 +19,7 @@ public class NoteController {
     INoteService noteService;
 
     @GetMapping(path = "/{id}")
-    public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") UUID id){
+    public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") Long id){
         DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
         AtomicReference<ResponseEntity<Note>> responseEntity = null;
         noteService.getNoteById(id).subscribe(
