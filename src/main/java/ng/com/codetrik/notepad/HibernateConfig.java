@@ -27,7 +27,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories("ng.com.codetrik.notepad")
 @Profile("production")
-@PropertySource("classpath:jdbc.properties")
+@PropertySource("classpath:production.properties")
 @Data
 public class HibernateConfig {
     @Autowired
