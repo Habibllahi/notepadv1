@@ -19,9 +19,9 @@ public class NoteController {
     INoteService noteService;
 
     @GetMapping(path = "/{id}")
-    public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") Long id){
+    public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") UUID id){
         DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity<Note>> responseEntity = null;
+        AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
         noteService.getNoteById(id).subscribe(
                 note -> {
                     responseEntity.set(new ResponseEntity<>(note, HttpStatus.OK));
@@ -35,7 +35,7 @@ public class NoteController {
     @PostMapping()
     public DeferredResult<ResponseEntity<Note>> setNote(@RequestBody @Valid Note note, BindingResult br){
         DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity<Note>> responseEntity = null;
+        AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
         noteService.setNoteById(note).subscribe(
                 savedNote -> {
                     responseEntity.set(new ResponseEntity<>(savedNote, HttpStatus.CREATED));

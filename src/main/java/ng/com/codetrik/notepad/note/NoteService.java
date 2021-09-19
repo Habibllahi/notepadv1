@@ -4,6 +4,7 @@ import io.reactivex.rxjava3.core.Single;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 @Service
 @Data
@@ -12,7 +13,7 @@ public class NoteService implements INoteService{
     INoteRepository noteRepository;
 
     @Override
-    public Single<Note> getNoteById(Long id) {
+    public Single<Note> getNoteById(UUID id) {
         return Single.just(noteRepository.findById(id).get());
     }
 

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface INoteRepository extends JpaRepository<Note, Long>, JpaSpecificationExecutor<Note> {
+public interface INoteRepository extends JpaRepository<Note, UUID>, JpaSpecificationExecutor<Note> {
 
 }
