@@ -2,12 +2,10 @@ package ng.com.codetrik.notepad;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -27,8 +25,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @EnableJpaRepositories("ng.com.codetrik.notepad")
 @Profile("production")
-@PropertySource("classpath:production.properties")
-@Data
 public class HibernateConfig {
     @Autowired
     private Environment env;
@@ -40,9 +36,9 @@ public class HibernateConfig {
     public DataSource dataSource() {
 
         if(env != null){
-            url = env.getProperty("spring.datasource.url");
-            username = env.getProperty("spring.datasource.username");
-            password = env.getProperty("spring.datasource.password");
+            url = env.getProperty("JDBC_DATABASE_URL");
+            username = env.getProperty("JDBC_DATABASE_USERNAME");
+            password = env.getProperty("JDBC_DATABASE_PASSWORD");
         }else{
             url = "jdbc:postgresql://ec2-34-227-120-94.compute-1.amazonaws.com:5432/d3feoncbee7em4?sslmode=require&user=gknivmpxchamku&password=0f1b8874989db85d558cd4bc276453bb590cae9033db96ed44371be388996263";
             username = "gknivmpxchamku";
