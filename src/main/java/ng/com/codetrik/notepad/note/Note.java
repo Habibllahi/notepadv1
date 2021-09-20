@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -34,6 +35,7 @@ public class Note {
     private LocalDateTime updateTimestamp;
 
     @Column(name = "title", nullable = false)
+    @NotNull
     private String title;
 
     @Lob

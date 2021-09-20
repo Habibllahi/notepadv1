@@ -1,6 +1,5 @@
 package ng.com.codetrik.notepad.user;
 
-import ng.com.codetrik.notepad.note.Note;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,11 +25,12 @@ public class UserController {
         userService.createUser(user).subscribe(
                 createdUser -> {
                     responseEntity.set(new ResponseEntity<>(createdUser, HttpStatus.CREATED));
+                    deferredResult.setResult(responseEntity.get());
                 },
                 error -> {
                     responseEntity.set(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
+                    deferredResult.setErrorResult(responseEntity.get());
                 });
-        deferredResult.setResult(responseEntity.get());
         return deferredResult;
     }
 
@@ -41,11 +41,12 @@ public class UserController {
         userService.UpdateUser(user,id).subscribe(
                 updatedUser -> {
                     responseEntity.set(new ResponseEntity<>(updatedUser, HttpStatus.OK));
+                    deferredResult.setResult(responseEntity.get());
                 },
                 error -> {
                     responseEntity.set(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
+                    deferredResult.setErrorResult(responseEntity.get());
                 });
-        deferredResult.setResult(responseEntity.get());
         return deferredResult;
     }
 }
