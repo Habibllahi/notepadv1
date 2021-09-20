@@ -11,6 +11,6 @@ public interface INoteService {
     Single<Note> getNoteById(UUID id);
     Single<Note> createNote(Note note);
     Single<Note> updateNote(Note note, UUID id);
-    Completable deleteNote(Note note, UUID id);
+    Completable deleteNote(UUID id);
     Observable<Note> getNotes();
 }

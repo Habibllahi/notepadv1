@@ -66,10 +66,10 @@ public class NoteController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public DeferredResult<ResponseEntity> deleteNote(@RequestBody @Valid Note note, @PathVariable("id") UUID id, BindingResult br){
+    public DeferredResult<ResponseEntity> deleteNote(@PathVariable("id") UUID id){
         DeferredResult<ResponseEntity> deferredResult = new DeferredResult<>();
         AtomicReference<ResponseEntity> responseEntity = new AtomicReference<>();
-        noteService.deleteNote(note,id).subscribe(()->{
+        noteService.deleteNote(id).subscribe(()->{
                     responseEntity.set(new ResponseEntity(HttpStatus.OK));
                     deferredResult.setResult(responseEntity.get());
                 },error->{

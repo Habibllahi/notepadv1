@@ -32,8 +32,8 @@ public class NoteService implements INoteService{
     }
 
     @Override
-    public Completable deleteNote(Note note, UUID id) {
-        return Completable.fromRunnable(()->deleteNoteProcess(note,id));
+    public Completable deleteNote(UUID id) {
+        return Completable.fromRunnable(()->deleteNoteProcess(id));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class NoteService implements INoteService{
         return noteRepository.findAll().stream();
     }
 
-    private void deleteNoteProcess(Note note, UUID id){
-        noteRepository.delete(note);
+    private void deleteNoteProcess(UUID id){
+        noteRepository.delete(noteRepository.getById(id));
     }
 }
