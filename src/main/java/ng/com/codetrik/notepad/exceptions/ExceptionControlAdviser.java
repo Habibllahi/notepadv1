@@ -9,6 +9,8 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.NoSuchElementException;
+
 @ControllerAdvice
 public class ExceptionControlAdviser {
 
@@ -20,6 +22,11 @@ public class ExceptionControlAdviser {
     @ExceptionHandler(NoSuchEntityException.class)
     public ResponseEntity<?> noSuchEntityException(Exception exception){
         return new ResponseEntity<>(new Error("No such entity found", HttpStatus.NOT_FOUND),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<?> noSuchElementException(Exception exception){
+        return new ResponseEntity<>(new Error("No such entity found", HttpStatus.EXPECTATION_FAILED),HttpStatus.EXPECTATION_FAILED);
     }
 
     @ExceptionHandler(SaveUnsuccessfulException.class)
