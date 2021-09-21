@@ -2,13 +2,12 @@ package ng.com.codetrik.notepad.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 import java.time.DayOfWeek;
 import java.time.Month;
 
 @Data
-@Component
+@AllArgsConstructor
 public class DateDTO {
     private DayOfWeek dayOfWeek;
     private int dayOfYear;

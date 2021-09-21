@@ -16,12 +16,9 @@ public class NoteService implements INoteService{
     @Autowired
     INoteRepository noteRepository;
 
-    @Autowired
-    DateDTO dateDTO;
-
     @Override
     public Single<Note> getNoteById(UUID id) {
-        return Single.just(getNoteByIdProcess(id,dateDTO));
+        return Single.just(getNoteByIdProcess(id));
     }
 
     @Override
@@ -41,7 +38,7 @@ public class NoteService implements INoteService{
 
     @Override
     public Observable<Note> getNotes() {
-        return Observable.fromStream(getNotesProcess(dateDTO));
+        return Observable.fromStream(getNotesProcess());
     }
 
     private Note updateNoteProcess(Note note, UUID id) {
@@ -52,12 +49,11 @@ public class NoteService implements INoteService{
         }).get();
     }
 
-    private Stream<Note> getNotesProcess(DateDTO dateDTO){
-        return noteRepository.findAll().stream().map(
+    private Stream<Note> getNotesProcess(){
+        return noteRepository.findAll().stream().peek(
                 note -> {
-                    note.setCreationTime(constructCreationTime(note,dateDTO));
-                    note.setUpdateTime(constructUpdateTime(note,dateDTO));
-                    return note;
+                    note.setCreationTime(constructCreationTime(note));
+                    note.setUpdateTime(constructUpdateTime(note));
                 }
         );
     }
@@ -66,33 +62,35 @@ public class NoteService implements INoteService{
         noteRepository.delete(noteRepository.getById(id));
     }
 
-    private Note getNoteByIdProcess(UUID id, DateDTO dateDTO){
+    private Note getNoteByIdProcess(UUID id){
         return noteRepository.findById(id).map(note -> {
-            note.setCreationTime(constructCreationTime(note,dateDTO));
-            note.setUpdateTime(constructUpdateTime(note,dateDTO));
+            note.setCreationTime(constructCreationTime(note));
+            note.setUpdateTime(constructUpdateTime(note));
             return note;
         }).get();
     }
 
-    private DateDTO constructCreationTime(Note note, DateDTO dateDTO){
-        dateDTO.setDayOfWeek(note.getCreationTimestamp().getDayOfWeek());
-        dateDTO.setDayOfYear(note.getCreationTimestamp().getDayOfYear());
-        dateDTO.setDayOfMonth(note.getCreationTimestamp().getDayOfMonth());
-        dateDTO.setMonth(note.getCreationTimestamp().getMonth());
-        dateDTO.setYear(note.getCreationTimestamp().getYear());
-        dateDTO.setHour(note.getCreationTimestamp().getHour());
-        dateDTO.setMinute(note.getCreationTimestamp().getMinute());
-        return dateDTO;
+    private DateDTO constructCreationTime(Note note){
+        return new DateDTO(
+                note.getCreationTime().getDayOfWeek(),
+                note.getCreationTime().getDayOfYear(),
+                note.getCreationTime().getDayOfMonth(),
+                note.getCreationTime().getMonth(),
+                note.getCreationTime().getYear(),
+                note.getCreationTime().getHour(),
+                note.getCreationTime().getMinute()
+        );
     }
 
-    private DateDTO constructUpdateTime(Note note, DateDTO dateDTO){
-        dateDTO.setDayOfWeek(note.getUpdateTime().getDayOfWeek());
-        dateDTO.setDayOfYear(note.getUpdateTime().getDayOfYear());
-        dateDTO.setDayOfMonth(note.getUpdateTime().getDayOfMonth());
-        dateDTO.setMonth(note.getUpdateTime().getMonth());
-        dateDTO.setYear(note.getUpdateTime().getYear());
-        dateDTO.setHour(note.getUpdateTime().getHour());
-        dateDTO.setMinute(note.getUpdateTime().getMinute());
-        return dateDTO;
+    private DateDTO constructUpdateTime(Note note){
+        return new DateDTO(
+                note.getUpdateTime().getDayOfWeek(),
+                note.getUpdateTime().getDayOfYear(),
+                note.getUpdateTime().getDayOfMonth(),
+                note.getUpdateTime().getMonth(),
+                note.getUpdateTime().getYear(),
+                note.getUpdateTime().getHour(),
+                note.getUpdateTime().getMinute()
+        );
     }
 }
