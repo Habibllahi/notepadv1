@@ -8,7 +8,6 @@ import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -19,7 +18,7 @@ public class NoteService implements INoteService{
 
     @Override
     public Single<Note> getNoteById(UUID id) {
-        return Single.just(getNoteByIdProcess(noteRepository,id));
+        return Single.just(getNoteByIdProcess(id));
     }
 
     @Override
@@ -39,7 +38,7 @@ public class NoteService implements INoteService{
 
     @Override
     public Observable<Note> getNotes() {
-        return Observable.fromStream(getNotesProcess(noteRepository));
+        return Observable.fromStream(getNotesProcess());
     }
 
     private Note updateNoteProcess(Note note, UUID id) {
@@ -50,49 +49,58 @@ public class NoteService implements INoteService{
         }).get();
     }
 
-    private Stream<Note> getNotesProcess(INoteRepository noteRepository){
-        var noteList = noteRepository.findAll().stream().map(
+    private Stream<Note> getNotesProcess(){
+        return noteRepository.findAll().stream().map(
                 note -> {
-                    note.setCreationTime(constructCreationTime(note));
-                    note.setUpdateTime(constructUpdateTime(note));
+                    note.setCreationTime(new DateDTO(
+                            note.getCreationTime().getDayOfWeek(),
+                            note.getCreationTime().getDayOfYear(),
+                            note.getCreationTime().getDayOfMonth(),
+                            note.getCreationTime().getMonth(),
+                            note.getCreationTime().getYear(),
+                            note.getCreationTime().getHour(),
+                            note.getCreationTime().getMinute()
+                    ));
+                    note.setUpdateTime(new DateDTO(
+                            note.getUpdateTime().getDayOfWeek(),
+                            note.getUpdateTime().getDayOfYear(),
+                            note.getUpdateTime().getDayOfMonth(),
+                            note.getUpdateTime().getMonth(),
+                            note.getUpdateTime().getYear(),
+                            note.getUpdateTime().getHour(),
+                            note.getUpdateTime().getMinute()
+                    ));
                     return note;
                 }
-        ).collect(Collectors.toList());
-        return noteList.stream();
+        );
     }
 
     private void deleteNoteProcess(UUID id){
         noteRepository.delete(noteRepository.getById(id));
     }
 
-    private Note getNoteByIdProcess(INoteRepository noteRepository, UUID id){
-        var note = noteRepository.findById(id).get();
-        note.setCreationTime(constructCreationTime(note));
-        note.setUpdateTime(constructUpdateTime(note));
-        return note;
+    private Note getNoteByIdProcess(UUID id){
+        return noteRepository.findById(id).map(note -> {
+            note.setCreationTime(new DateDTO(
+                    note.getCreationTime().getDayOfWeek(),
+                    note.getCreationTime().getDayOfYear(),
+                    note.getCreationTime().getDayOfMonth(),
+                    note.getCreationTime().getMonth(),
+                    note.getCreationTime().getYear(),
+                    note.getCreationTime().getHour(),
+                    note.getCreationTime().getMinute()
+            ));
+            note.setUpdateTime(new DateDTO(
+                    note.getUpdateTime().getDayOfWeek(),
+                    note.getUpdateTime().getDayOfYear(),
+                    note.getUpdateTime().getDayOfMonth(),
+                    note.getUpdateTime().getMonth(),
+                    note.getUpdateTime().getYear(),
+                    note.getUpdateTime().getHour(),
+                    note.getUpdateTime().getMinute()
+            ));
+            return note;
+        }).get();
     }
 
-    private DateDTO constructCreationTime(Note note){
-        return new DateDTO(
-                note.getCreationTime().getDayOfWeek(),
-                note.getCreationTime().getDayOfYear(),
-                note.getCreationTime().getDayOfMonth(),
-                note.getCreationTime().getMonth(),
-                note.getCreationTime().getYear(),
-                note.getCreationTime().getHour(),
-                note.getCreationTime().getMinute()
-        );
-    }
-
-    private DateDTO constructUpdateTime(Note note){
-        return new DateDTO(
-                note.getUpdateTime().getDayOfWeek(),
-                note.getUpdateTime().getDayOfYear(),
-                note.getUpdateTime().getDayOfMonth(),
-                note.getUpdateTime().getMonth(),
-                note.getUpdateTime().getYear(),
-                note.getUpdateTime().getHour(),
-                note.getUpdateTime().getMinute()
-        );
-    }
 }
