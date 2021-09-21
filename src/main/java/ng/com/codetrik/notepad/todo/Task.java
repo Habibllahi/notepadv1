@@ -1,4 +1,4 @@
-package ng.com.codetrik.notepad.note;
+package ng.com.codetrik.notepad.todo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -9,19 +9,19 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "note", schema = "codetrik_server")
-@Entity(name = "Note")
+@Table(name = "task")
+@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Note {
+public class Task {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator = "UUID")
@@ -39,13 +39,13 @@ public class Note {
     @JsonIgnore
     private LocalDateTime updateTimestamp;
 
-    @Column(name = "title", nullable = false)
-    @NotNull
-    private String title;
+    @Column(name = "time_to_get_task_accomplished", nullable = false)
+    @JsonIgnore
+    private LocalDateTime timeToGetTaskAccomplished;
 
-    @Lob
-    @Column(name = "body")
-    private String body;
+    @ManyToOne
+    @Column(name = "todo_id")
+    private Todo todo;
 
     @Transient
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -55,12 +55,16 @@ public class Note {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DateDTO updateTime;
 
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    private DateDTO timeToAccomplishTask; //the time in which the task is set to be accomplished
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Note note = (Note) o;
-        return Objects.equals(id, note.id);
+        Task task = (Task) o;
+        return Objects.equals(id, task.id);
     }
 
     @Override

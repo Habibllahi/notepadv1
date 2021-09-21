@@ -1,4 +1,4 @@
-package ng.com.codetrik.notepad.note;
+package ng.com.codetrik.notepad.todo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,16 +12,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-@Table(name = "note", schema = "codetrik_server")
-@Entity(name = "Note")
+@Table(name = "todo")
+@Entity
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Note {
+public class Todo {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator = "UUID")
@@ -43,10 +44,6 @@ public class Note {
     @NotNull
     private String title;
 
-    @Lob
-    @Column(name = "body")
-    private String body;
-
     @Transient
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DateDTO creationTime;
@@ -55,12 +52,15 @@ public class Note {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DateDTO updateTime;
 
+    @OneToMany(mappedBy = "todo")
+    private List<Task> tasks;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Note note = (Note) o;
-        return Objects.equals(id, note.id);
+        Todo todo = (Todo) o;
+        return Objects.equals(id, todo.id);
     }
 
     @Override
