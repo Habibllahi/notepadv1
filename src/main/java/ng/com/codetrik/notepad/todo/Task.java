@@ -44,7 +44,6 @@ public class Task {
     private LocalDateTime timeToGetTaskAccomplished;
 
     @ManyToOne
-    @Column(name = "todo_id")
     private Todo todo;
 
     @Transient
