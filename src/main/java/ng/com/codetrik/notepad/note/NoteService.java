@@ -8,6 +8,7 @@ import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -18,7 +19,7 @@ public class NoteService implements INoteService{
 
     @Override
     public Single<Note> getNoteById(UUID id) {
-        return Single.just(getNoteByIdProcess(id));
+        return Single.just(getNoteByIdProcess(noteRepository,id));
     }
 
     @Override
@@ -38,7 +39,7 @@ public class NoteService implements INoteService{
 
     @Override
     public Observable<Note> getNotes() {
-        return Observable.fromStream(getNotesProcess());
+        return Observable.fromStream(getNotesProcess(noteRepository));
     }
 
     private Note updateNoteProcess(Note note, UUID id) {
@@ -49,25 +50,26 @@ public class NoteService implements INoteService{
         }).get();
     }
 
-    private Stream<Note> getNotesProcess(){
-        return noteRepository.findAll().stream().peek(
+    private Stream<Note> getNotesProcess(INoteRepository noteRepository){
+        var noteList = noteRepository.findAll().stream().map(
                 note -> {
                     note.setCreationTime(constructCreationTime(note));
                     note.setUpdateTime(constructUpdateTime(note));
+                    return note;
                 }
-        );
+        ).collect(Collectors.toList());
+        return noteList.stream();
     }
 
     private void deleteNoteProcess(UUID id){
         noteRepository.delete(noteRepository.getById(id));
     }
 
-    private Note getNoteByIdProcess(UUID id){
-        return noteRepository.findById(id).map(note -> {
-            note.setCreationTime(constructCreationTime(note));
-            note.setUpdateTime(constructUpdateTime(note));
-            return note;
-        }).get();
+    private Note getNoteByIdProcess(INoteRepository noteRepository, UUID id){
+        var note = noteRepository.findById(id).get();
+        note.setCreationTime(constructCreationTime(note));
+        note.setUpdateTime(constructUpdateTime(note));
+        return note;
     }
 
     private DateDTO constructCreationTime(Note note){

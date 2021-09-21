@@ -2,7 +2,6 @@ package ng.com.codetrik.notepad.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
 import java.time.DayOfWeek;
 import java.time.Month;
 
