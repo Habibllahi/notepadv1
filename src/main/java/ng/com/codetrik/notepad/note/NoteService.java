@@ -7,6 +7,7 @@ import lombok.Data;
 import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -51,7 +52,7 @@ public class NoteService implements INoteService{
 
     private Stream<Note> getNotesProcess(){
         return noteRepository.findAll().stream().map(
-                note -> {
+                (Note note) -> {
                     note.setCreationTime(new DateDTO(
                             note.getCreationTime().getDayOfWeek(),
                             note.getCreationTime().getDayOfYear(),
@@ -80,7 +81,7 @@ public class NoteService implements INoteService{
     }
 
     private Note getNoteByIdProcess(UUID id){
-        return noteRepository.findById(id).map(note -> {
+        return noteRepository.findById(id).map((Note note) -> {
             note.setCreationTime(new DateDTO(
                     note.getCreationTime().getDayOfWeek(),
                     note.getCreationTime().getDayOfYear(),
