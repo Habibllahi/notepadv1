@@ -7,9 +7,7 @@ import lombok.Data;
 import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Service
 @Data
@@ -19,7 +17,7 @@ public class NoteService implements INoteService{
 
     @Override
     public Single<Note> getNoteById(UUID id) {
-        return Single.just(getNoteByIdProcess(id));
+        return Single.just(noteRepository.findById(id).get());
     }
 
     @Override
@@ -39,7 +37,33 @@ public class NoteService implements INoteService{
 
     @Override
     public Observable<Note> getNotes() {
-        return Observable.fromStream(getNotesProcess());
+        return Observable.fromStream(noteRepository.findAll().stream());
+    }
+
+    @Override
+    public DateDTO constructUpdateTime(Note note, DateDTO dateDTO) {
+        var localDateTime = note.getUpdateTimestamp();
+        dateDTO.setMinute(localDateTime.getMinute());
+        dateDTO.setHour(localDateTime.getHour());
+        dateDTO.setYear(localDateTime.getYear());
+        dateDTO.setMonth(localDateTime.getMonth());
+        dateDTO.setDayOfMonth(localDateTime.getDayOfMonth());
+        dateDTO.setDayOfWeek(localDateTime.getDayOfWeek());
+        dateDTO.setDayOfYear(localDateTime.getDayOfYear());
+        return dateDTO;
+    }
+
+    @Override
+    public DateDTO constructCreationTine(Note note, DateDTO dateDTO) {
+        var localDateTime = note.getCreationTimestamp();
+        dateDTO.setMinute(localDateTime.getMinute());
+        dateDTO.setHour(localDateTime.getHour());
+        dateDTO.setYear(localDateTime.getYear());
+        dateDTO.setMonth(localDateTime.getMonth());
+        dateDTO.setDayOfMonth(localDateTime.getDayOfMonth());
+        dateDTO.setDayOfWeek(localDateTime.getDayOfWeek());
+        dateDTO.setDayOfYear(localDateTime.getDayOfYear());
+        return dateDTO;
     }
 
     private Note updateNoteProcess(Note note, UUID id) {
@@ -49,59 +73,10 @@ public class NoteService implements INoteService{
             return noteRepository.save(fetchedNote);
         }).get();
     }
-
-    private Stream<Note> getNotesProcess(){
-        return noteRepository.findAll().stream().map(
-                (Note note) -> {
-                    note.setCreationTime(new DateDTO(
-                            note.getCreationTime().getDayOfWeek(),
-                            note.getCreationTime().getDayOfYear(),
-                            note.getCreationTime().getDayOfMonth(),
-                            note.getCreationTime().getMonth(),
-                            note.getCreationTime().getYear(),
-                            note.getCreationTime().getHour(),
-                            note.getCreationTime().getMinute()
-                    ));
-                    note.setUpdateTime(new DateDTO(
-                            note.getUpdateTime().getDayOfWeek(),
-                            note.getUpdateTime().getDayOfYear(),
-                            note.getUpdateTime().getDayOfMonth(),
-                            note.getUpdateTime().getMonth(),
-                            note.getUpdateTime().getYear(),
-                            note.getUpdateTime().getHour(),
-                            note.getUpdateTime().getMinute()
-                    ));
-                    return note;
-                }
-        );
-    }
-
     private void deleteNoteProcess(UUID id){
         noteRepository.delete(noteRepository.getById(id));
     }
 
-    private Note getNoteByIdProcess(UUID id){
-        return noteRepository.findById(id).map((Note note) -> {
-            note.setCreationTime(new DateDTO(
-                    note.getCreationTime().getDayOfWeek(),
-                    note.getCreationTime().getDayOfYear(),
-                    note.getCreationTime().getDayOfMonth(),
-                    note.getCreationTime().getMonth(),
-                    note.getCreationTime().getYear(),
-                    note.getCreationTime().getHour(),
-                    note.getCreationTime().getMinute()
-            ));
-            note.setUpdateTime(new DateDTO(
-                    note.getUpdateTime().getDayOfWeek(),
-                    note.getUpdateTime().getDayOfYear(),
-                    note.getUpdateTime().getDayOfMonth(),
-                    note.getUpdateTime().getMonth(),
-                    note.getUpdateTime().getYear(),
-                    note.getUpdateTime().getHour(),
-                    note.getUpdateTime().getMinute()
-            ));
-            return note;
-        }).get();
-    }
+
 
 }

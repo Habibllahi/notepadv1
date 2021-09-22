@@ -1,5 +1,6 @@
 package ng.com.codetrik.notepad.note;
 
+import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,12 +21,17 @@ public class NoteController {
     @Autowired
     INoteService noteService;
 
+    @Autowired
+    DateDTO dateDTO;
+
     @GetMapping(path = "/{id}")
     public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") UUID id){
         DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
         AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
         noteService.getNoteById(id).subscribe(
                 note -> {
+                    note.setUpdateTime(noteService.constructUpdateTime(note,dateDTO));
+                    note.setCreationTime(noteService.constructCreationTine(note,dateDTO));
                     responseEntity.set(new ResponseEntity<>(note, HttpStatus.OK));
                     deferredResult.setResult(responseEntity.get());
                 },error->{
@@ -85,6 +91,8 @@ public class NoteController {
         AtomicReference<ResponseEntity<List<Note>>> responseEntity = new AtomicReference<>();
         List<Note> noteList = new ArrayList<>();
         noteService.getNotes().subscribe(note -> {
+                    note.setUpdateTime(noteService.constructUpdateTime(note,dateDTO));
+                    note.setCreationTime(noteService.constructCreationTine(note,dateDTO));
                     noteList.add(note);
                 },error->{
                     responseEntity.set(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
