@@ -47,6 +47,8 @@ public class NoteController {
         AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
         noteService.createNote(note).subscribe(
                 savedNote -> {
+                    savedNote.setUpdateTime(noteService.constructUpdateTime(savedNote,dateDTO));
+                    savedNote.setCreationTime(noteService.constructCreationTine(savedNote,dateDTO));
                     responseEntity.set(new ResponseEntity<>(savedNote, HttpStatus.CREATED));
                     deferredResult.setResult(responseEntity.get());
                 },error->{
@@ -62,6 +64,8 @@ public class NoteController {
         AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
         noteService.updateNote(note,id).subscribe(
                 updatedNote -> {
+                    updatedNote.setUpdateTime(noteService.constructUpdateTime(updatedNote,dateDTO));
+                    updatedNote.setCreationTime(noteService.constructCreationTine(updatedNote,dateDTO));
                     responseEntity.set(new ResponseEntity<>(updatedNote, HttpStatus.OK));
                     deferredResult.setResult(responseEntity.get());
                 },error->{
