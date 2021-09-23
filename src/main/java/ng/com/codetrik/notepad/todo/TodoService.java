@@ -16,6 +16,9 @@ public class TodoService implements ITodoService {
     ITodoRepository todoRepository;
 
     @Autowired
+    ITaskService taskService;
+
+    @Autowired
     DateDTO dateDTO;
 
     @Override
@@ -59,7 +62,15 @@ public class TodoService implements ITodoService {
 
     @Override
     public Observable<Task> getTasks(UUID id) {
-        return Observable.fromStream(todoRepository.findById(id).get().getTasks().stream());
+        return Observable.fromStream(todoRepository.findById(id).get().getTasks().stream()).map(
+                fetchedTask ->{
+                    fetchedTask.setCreationTime(taskService.constructCreationTime(fetchedTask,dateDTO));
+                    fetchedTask.setUpdateTime(taskService.constructUpdateTime(fetchedTask,dateDTO));
+                    fetchedTask.setTimeToAccomplishTask(taskService.constructTimeToAccomplishTask(fetchedTask,dateDTO));
+                    fetchedTask.setAssociatedTodoID(fetchedTask.getTodo().getId());
+                    return fetchedTask;
+                }
+        );
     }
 
     @Override
