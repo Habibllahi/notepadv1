@@ -32,6 +32,7 @@ public class TaskService implements ITaskService {
                     fetchedTask.setCreationTime(constructCreationTime(fetchedTask,dateDTO));
                     fetchedTask.setUpdateTime(constructUpdateTime(fetchedTask,dateDTO));
                     fetchedTask.setTimeToAccomplishTask(constructTimeToAccomplishTask(fetchedTask,dateDTO));
+                    fetchedTask.setAssociatedTodoID(fetchedTask.getTodo().getId());
                     return fetchedTask;
                 }
         );
@@ -72,6 +73,7 @@ public class TaskService implements ITaskService {
                     updatedTask.setCreationTime(constructCreationTime(updatedTask, dateDTO));
                     updatedTask.setUpdateTime(constructUpdateTime(updatedTask, dateDTO));
                     updatedTask.setTimeToAccomplishTask(constructTimeToAccomplishTask(updatedTask, dateDTO));
+                    updatedTask.setAssociatedTodoID(updatedTask.getTodo().getId());
                     return updatedTask;
                 }
         );
