@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/api/v1/todos",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/api/v1/tasks",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class TaskController {
     @Autowired
     ITaskService taskService;
 
     @GetMapping("/{id}")
-    public DeferredResult<ResponseEntity<Task>> getTodo(@PathVariable("id") UUID id){
+    public DeferredResult<ResponseEntity<Task>> getTask(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity<Task>>();
         taskService.getTaskById(id).subscribe(task -> {
             deferredResult.setResult(new ResponseEntity<>(task, HttpStatus.OK));
@@ -31,7 +31,7 @@ public class TaskController {
     }
 
     @PostMapping()
-    public DeferredResult<ResponseEntity<Task>> setTodo(@RequestBody @Valid Task task, BindingResult br){
+    public DeferredResult<ResponseEntity<Task>> setTask(@RequestBody @Valid Task task, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Task>>();
         taskService.createTask(task).subscribe(savedTask->{
             deferredResult.setResult(new ResponseEntity<>(savedTask,HttpStatus.CREATED));
@@ -42,7 +42,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public DeferredResult<ResponseEntity<Task>> updateTodo(@RequestBody Task task, @PathVariable("id") UUID id, BindingResult br){
+    public DeferredResult<ResponseEntity<Task>> updateTask(@RequestBody Task task, @PathVariable("id") UUID id, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Task>>();
         taskService.updateTask(task,id).subscribe(updateTask->{
             deferredResult.setResult(new ResponseEntity<>(updateTask,HttpStatus.OK));
@@ -53,7 +53,7 @@ public class TaskController {
     }
 
     @DeleteMapping("/{id}")
-    public DeferredResult<ResponseEntity> deleteTodo(@PathVariable("id") UUID id){
+    public DeferredResult<ResponseEntity> deleteTask(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity>();
         taskService.deleteTask(id).subscribe(()-> {
             deferredResult.setResult(new ResponseEntity(HttpStatus.OK));
@@ -64,15 +64,15 @@ public class TaskController {
     }
 
     @GetMapping()
-    public  DeferredResult<ResponseEntity<List<Task>>> getNotes(){
+    public  DeferredResult<ResponseEntity<List<Task>>> getTasks(){
         var deferredResult = new DeferredResult<ResponseEntity<List<Task>>>();
-        List<Task> todoList = new ArrayList<>();
+        List<Task> taskList = new ArrayList<>();
         taskService.getTasks().subscribe(task->{
-            todoList.add(task);
+            taskList.add(task);
         },error->{
             deferredResult.setErrorResult(new ResponseEntity(HttpStatus.EXPECTATION_FAILED));
         },()->{
-            deferredResult.setResult(new ResponseEntity<>(todoList,HttpStatus.OK));
+            deferredResult.setResult(new ResponseEntity<>(taskList,HttpStatus.OK));
         });
         return deferredResult;
     }
