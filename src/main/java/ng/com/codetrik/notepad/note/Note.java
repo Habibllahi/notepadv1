@@ -2,6 +2,7 @@ package ng.com.codetrik.notepad.note;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
 import ng.com.codetrik.notepad.util.DateDTO;
 import org.hibernate.Hibernate;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@JsonPropertyOrder(alphabetic = true)
 public class Note {
     @Id
     @Column(name = "id", nullable = false)
