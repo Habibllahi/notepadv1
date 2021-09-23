@@ -42,6 +42,7 @@ public class TaskService implements ITaskService {
         return Observable.fromStream(taskRepository.findAll().stream()).map(
                 fetchedTask ->{
                     fetchedTask.setCreationTime(constructCreationTime(fetchedTask,dateDTO));
+                    fetchedTask.setAssociatedTodoID(fetchedTask.getTodo().getId());
                     fetchedTask.setUpdateTime(constructUpdateTime(fetchedTask,dateDTO));
                     fetchedTask.setTimeToAccomplishTask(constructTimeToAccomplishTask(fetchedTask,dateDTO));
                     return fetchedTask;
