@@ -53,6 +53,7 @@ public class Todo {
     private DateDTO updateTime;
 
     @OneToMany(mappedBy = "todo")
+    @JsonIgnore
     private List<Task> tasks;
 
     @Override

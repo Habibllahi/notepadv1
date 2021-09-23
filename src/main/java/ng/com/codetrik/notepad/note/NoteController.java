@@ -1,6 +1,5 @@
 package ng.com.codetrik.notepad.note;
 
-import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,7 +12,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping(path = "/api/v1/notes",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
@@ -21,89 +19,61 @@ public class NoteController {
     @Autowired
     INoteService noteService;
 
-    @Autowired
-    DateDTO dateDTO;
-
     @GetMapping(path = "/{id}")
     public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") UUID id){
-        DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
+        var deferredResult = new DeferredResult<ResponseEntity<Note>>();
         noteService.getNoteById(id).subscribe(
                 note -> {
-                    note.setUpdateTime(noteService.constructUpdateTime(note,dateDTO));
-                    note.setCreationTime(noteService.constructCreationTine(note,dateDTO));
-                    responseEntity.set(new ResponseEntity<>(note, HttpStatus.OK));
-                    deferredResult.setResult(responseEntity.get());
+                    deferredResult.setResult(new ResponseEntity<>(note, HttpStatus.OK));
                 },error->{
-                    responseEntity.set(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-                    deferredResult.setErrorResult(responseEntity.get());
+                    deferredResult.setErrorResult(new ResponseEntity<>(HttpStatus.NOT_FOUND));
                 });
         return  deferredResult;
     }
 
     @PostMapping()
     public DeferredResult<ResponseEntity<Note>> setNote(@RequestBody @Valid Note note, BindingResult br){
-        DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
+        var deferredResult = new DeferredResult<ResponseEntity<Note>>();
         noteService.createNote(note).subscribe(
                 savedNote -> {
-                    savedNote.setUpdateTime(noteService.constructUpdateTime(savedNote,dateDTO));
-                    savedNote.setCreationTime(noteService.constructCreationTine(savedNote,dateDTO));
-                    responseEntity.set(new ResponseEntity<>(savedNote, HttpStatus.CREATED));
-                    deferredResult.setResult(responseEntity.get());
+                    deferredResult.setResult(new ResponseEntity<>(savedNote, HttpStatus.CREATED));
                 },error->{
-                    responseEntity.set(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
-                    deferredResult.setErrorResult(responseEntity.get());
+                    deferredResult.setErrorResult(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
                 });
         return  deferredResult;
     }
 
     @PutMapping(path = "/{id}")
-    public DeferredResult<ResponseEntity<Note>> getNote(@RequestBody @Valid Note note, @PathVariable("id") UUID id, BindingResult br) {
-        DeferredResult<ResponseEntity<Note>> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity<Note>> responseEntity = new AtomicReference<>();
+    public DeferredResult<ResponseEntity<Note>> updateNote(@RequestBody @Valid Note note, @PathVariable("id") UUID id, BindingResult br) {
+        var deferredResult = new DeferredResult<ResponseEntity<Note>>();
         noteService.updateNote(note,id).subscribe(
                 updatedNote -> {
-                    updatedNote.setUpdateTime(noteService.constructUpdateTime(updatedNote,dateDTO));
-                    updatedNote.setCreationTime(noteService.constructCreationTine(updatedNote,dateDTO));
-                    responseEntity.set(new ResponseEntity<>(updatedNote, HttpStatus.OK));
-                    deferredResult.setResult(responseEntity.get());
+                    deferredResult.setResult(new ResponseEntity<>(updatedNote, HttpStatus.OK));
                 },error->{
-                    responseEntity.set(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-                    deferredResult.setErrorResult(responseEntity.get());
+                    deferredResult.setErrorResult(new ResponseEntity<>(HttpStatus.NOT_FOUND));
                 });
         return  deferredResult;
     }
 
     @DeleteMapping(path = "/{id}")
     public DeferredResult<ResponseEntity> deleteNote(@PathVariable("id") UUID id){
-        DeferredResult<ResponseEntity> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity> responseEntity = new AtomicReference<>();
+        var deferredResult = new DeferredResult<ResponseEntity>();
         noteService.deleteNote(id).subscribe(()->{
-                    responseEntity.set(new ResponseEntity(HttpStatus.OK));
-                    deferredResult.setResult(responseEntity.get());
+                    deferredResult.setResult(new ResponseEntity(HttpStatus.OK));
                 },error->{
-                    responseEntity.set(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
-                    deferredResult.setErrorResult(responseEntity.get());
+                    deferredResult.setErrorResult(HttpStatus.EXPECTATION_FAILED);
                 });
         return deferredResult;
     }
 
     @GetMapping()
     public DeferredResult<ResponseEntity<List<Note>>> getNotes(){
-        DeferredResult<ResponseEntity<List<Note>>> deferredResult = new DeferredResult<>();
-        AtomicReference<ResponseEntity<List<Note>>> responseEntity = new AtomicReference<>();
-        List<Note> noteList = new ArrayList<>();
-        noteService.getNotes().subscribe(note -> {
-                    note.setUpdateTime(noteService.constructUpdateTime(note,dateDTO));
-                    note.setCreationTime(noteService.constructCreationTine(note,dateDTO));
-                    noteList.add(note);
-                },error->{
-                    responseEntity.set(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
-                    deferredResult.setErrorResult(responseEntity.get());
+        var deferredResult = new DeferredResult<ResponseEntity<List<Note>>>();
+        List<Note>  noteList = new ArrayList<Note>();
+        noteService.getNotes().subscribe(noteList::add, error->{
+                    deferredResult.setErrorResult(new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED));
                 },()->{
-                    responseEntity.set(new ResponseEntity<>(noteList,HttpStatus.OK));
-                    deferredResult.setResult(responseEntity.get());
+                    deferredResult.setResult(new ResponseEntity<>(noteList,HttpStatus.OK));
                 });
         return deferredResult;
     }

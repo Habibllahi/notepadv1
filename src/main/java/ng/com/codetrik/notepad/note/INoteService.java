@@ -1,7 +1,6 @@
 package ng.com.codetrik.notepad.note;
 
 import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
 import ng.com.codetrik.notepad.util.DateDTO;
@@ -15,5 +14,5 @@ public interface INoteService {
     Completable deleteNote(UUID id);
     Observable<Note> getNotes();
     DateDTO constructUpdateTime(Note note, DateDTO dateDTO);
-    DateDTO constructCreationTine(Note mote, DateDTO dateDTO);
+    DateDTO constructCreationTine(Note note, DateDTO dateDTO);
 }

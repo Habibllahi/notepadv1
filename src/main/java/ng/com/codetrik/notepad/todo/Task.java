@@ -11,6 +11,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -44,6 +45,8 @@ public class Task {
     private LocalDateTime timeToGetTaskAccomplished;
 
     @ManyToOne
+    @JoinColumn(name = "todo_id", nullable = false)
+    @JsonIgnore
     private Todo todo;
 
     @Transient
@@ -56,7 +59,17 @@ public class Task {
 
     @Transient
     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    @NotNull
     private DateDTO timeToAccomplishTask; //the time in which the task is set to be accomplished
+
+    @Transient
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.READ_WRITE)
+    private UUID associatedTodoID;
+
+    @Column(name = "body", nullable = false)
+    @NotNull
+    private String body;
 
     @Override
     public boolean equals(Object o) {
