@@ -13,12 +13,12 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/api/v1/users",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class UserController {
     @Autowired
     IUserService userService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
     public DeferredResult<ResponseEntity<User>> createUser(@RequestBody @Valid User user, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<User>>();
@@ -32,6 +32,7 @@ public class UserController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/{id}")
     public DeferredResult<ResponseEntity<User>> updateUser(@PathVariable("id") UUID id, @RequestBody @Valid User user, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<User>>();
@@ -45,6 +46,7 @@ public class UserController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/authenticate")
     public DeferredResult<ResponseEntity<Authenticate>> isUserExist(){
         var deferredResult = new DeferredResult<ResponseEntity<Authenticate>>();

@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = "/api/v1/todos",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class TodoController {
     @Autowired
     ITodoService todoService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}")
     public DeferredResult<ResponseEntity<Todo>> getTodo(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity<Todo>>();
@@ -31,6 +31,7 @@ public class TodoController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
     public DeferredResult<ResponseEntity<Todo>> setTodo(@RequestBody @Valid Todo todo, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Todo>>();
@@ -42,6 +43,7 @@ public class TodoController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/{id}")
     public DeferredResult<ResponseEntity<Todo>> updateTodo(@RequestBody Todo todo, @PathVariable("id") UUID id, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Todo>>();
@@ -53,6 +55,7 @@ public class TodoController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/{id}")
     public DeferredResult<ResponseEntity> deleteTodo(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity>();
@@ -64,6 +67,7 @@ public class TodoController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping()
     public  DeferredResult<ResponseEntity<List<Todo>>> getNotes(){
         var deferredResult = new DeferredResult<ResponseEntity<List<Todo>>>();
@@ -78,6 +82,7 @@ public class TodoController {
         return deferredResult;
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}/tasks")
     public DeferredResult<ResponseEntity<List<Task>>> getTaskAssociatedWithATodo(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity<List<Task>>>();
