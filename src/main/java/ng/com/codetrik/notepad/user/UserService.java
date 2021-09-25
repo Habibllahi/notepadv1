@@ -2,6 +2,7 @@ package ng.com.codetrik.notepad.user;
 
 import io.reactivex.rxjava3.core.Single;
 import ng.com.codetrik.notepad.exceptions.UserAlreadyExistException;
+import ng.com.codetrik.notepad.util.Authenticate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,11 @@ public class UserService implements IUserService{
     @Override
     public Single<User> UpdateUser(User user, UUID id) {
         return Single.just(updateUserProcess(user, id));
+    }
+
+    @Override
+    public Single<Authenticate> userExist() {
+        return Single.just(userExistProcess());
     }
 
     private User createUserProcess(User user){
@@ -52,5 +58,9 @@ public class UserService implements IUserService{
             }
             return userRepository.save(fetchedUser);
         }).get();
+    }
+
+    private Authenticate userExistProcess(){
+        return new Authenticate(true);
     }
 }
