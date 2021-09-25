@@ -7,11 +7,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
+@CrossOrigin(origins = "http://localhost:4200")
 public class ExceptionControlAdviser {
 
     @ExceptionHandler(UserAlreadyExistException.class)
