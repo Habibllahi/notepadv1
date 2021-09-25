@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(path = "/api/v1/tasks",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class TaskController {
     @Autowired
     ITaskService taskService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}")
     public DeferredResult<ResponseEntity<Task>> getTask(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity<Task>>();
@@ -31,7 +31,6 @@ public class TaskController {
         return deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
     public DeferredResult<ResponseEntity<Task>> setTask(@RequestBody @Valid Task task, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Task>>();
@@ -43,7 +42,6 @@ public class TaskController {
         return deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping("/{id}")
     public DeferredResult<ResponseEntity<Task>> updateTask(@RequestBody Task task, @PathVariable("id") UUID id, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Task>>();
@@ -55,7 +53,6 @@ public class TaskController {
         return deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/{id}")
     public DeferredResult<ResponseEntity> deleteTask(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity>();
@@ -67,7 +64,6 @@ public class TaskController {
         return deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping()
     public  DeferredResult<ResponseEntity<List<Task>>> getTasks(){
         var deferredResult = new DeferredResult<ResponseEntity<List<Task>>>();

@@ -14,12 +14,12 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(path = "/api/v1/notes",produces = {MediaType.APPLICATION_JSON_VALUE},consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class NoteController {
     @Autowired
     INoteService noteService;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping(path = "/{id}")
     public DeferredResult<ResponseEntity<Note>> getNote(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity<Note>>();
@@ -32,7 +32,6 @@ public class NoteController {
         return  deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping()
     public DeferredResult<ResponseEntity<Note>> setNote(@RequestBody @Valid Note note, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<Note>>();
@@ -45,7 +44,6 @@ public class NoteController {
         return  deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @PutMapping(path = "/{id}")
     public DeferredResult<ResponseEntity<Note>> updateNote(@RequestBody @Valid Note note, @PathVariable("id") UUID id, BindingResult br) {
         var deferredResult = new DeferredResult<ResponseEntity<Note>>();
@@ -58,7 +56,6 @@ public class NoteController {
         return  deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping(path = "/{id}")
     public DeferredResult<ResponseEntity> deleteNote(@PathVariable("id") UUID id){
         var deferredResult = new DeferredResult<ResponseEntity>();
@@ -70,7 +67,6 @@ public class NoteController {
         return deferredResult;
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping()
     public DeferredResult<ResponseEntity<List<Note>>> getNotes(){
         var deferredResult = new DeferredResult<ResponseEntity<List<Note>>>();
