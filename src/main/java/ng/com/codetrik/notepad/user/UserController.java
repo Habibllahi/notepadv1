@@ -35,6 +35,7 @@ public class UserController {
     @PutMapping("/{id}")
     public DeferredResult<ResponseEntity<User>> updateUser(@PathVariable("id") UUID id, @RequestBody @Valid User user, BindingResult br){
         var deferredResult = new DeferredResult<ResponseEntity<User>>();
+
         userService.UpdateUser(user,id).subscribe(
                 updatedUser -> {
                     deferredResult.setResult(new ResponseEntity<>(updatedUser, HttpStatus.OK));
