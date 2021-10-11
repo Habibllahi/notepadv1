@@ -1,9 +1,11 @@
+/**
+ * @Author: Hamzat Habibllahi
+ */
 package ng.com.codetrik.notepad.note;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
-import lombok.Data;
 import ng.com.codetrik.notepad.util.DateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,3 +1,6 @@
+/**
+ * @Author: Hamzat Habibllahi
+ */
 package ng.com.codetrik.notepad.user;
 
 import ng.com.codetrik.notepad.util.Authenticate;
@@ -56,4 +59,5 @@ public class UserController {
         });
         return deferredResult;
     }
+
 }

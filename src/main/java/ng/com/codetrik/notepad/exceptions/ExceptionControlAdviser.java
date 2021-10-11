@@ -1,8 +1,7 @@
-package ng.com.codetrik.notepad.exceptions;
-/*
- @Author Hamzat Habibllahi
+/**
+ * @Author: Hamzat Habibllahi
  */
-
+package ng.com.codetrik.notepad.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;

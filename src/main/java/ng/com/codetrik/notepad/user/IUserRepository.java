@@ -1,3 +1,6 @@
+/**
+ * @Author: Hamzat Habibllahi
+ */
 package ng.com.codetrik.notepad.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;

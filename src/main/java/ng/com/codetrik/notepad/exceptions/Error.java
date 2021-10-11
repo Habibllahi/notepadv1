@@ -1,7 +1,7 @@
-package ng.com.codetrik.notepad.exceptions;
-/*
- @Author Hamzat Habibllahi
+/**
+ * @Author: Hamzat Habibllahi
  */
+package ng.com.codetrik.notepad.exceptions;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;

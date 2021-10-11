@@ -1,3 +1,6 @@
+/**
+ * @Author: Hamzat Habibllahi
+ */
 package ng.com.codetrik.notepad.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;

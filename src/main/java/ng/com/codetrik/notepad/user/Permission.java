@@ -1,3 +1,6 @@
+/**
+ * @Author: Hamzat Habibllahi
+ */
 package ng.com.codetrik.notepad.user;
 
 public enum Permission {

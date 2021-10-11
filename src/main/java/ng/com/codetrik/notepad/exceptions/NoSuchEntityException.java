@@ -1,7 +1,8 @@
-package ng.com.codetrik.notepad.exceptions;
-/*
- @Author Hamzat Habibllahi
+/**
+ * @Author: Hamzat Habibllahi
  */
+package ng.com.codetrik.notepad.exceptions;
+
 public class NoSuchEntityException extends RuntimeException{
     public NoSuchEntityException() {
     }
